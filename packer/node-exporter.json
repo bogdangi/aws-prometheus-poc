@@ -1,0 +1,25 @@
+{
+  "builders": [
+    {
+      "name": "node-exporter",
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "ami_name": "node-exporter-{{timestamp}}",
+      "source_ami": "ami-0cc0a36f626a4fdf5",
+      "instance_type": "t2.micro",
+      "region": "eu-central-1",
+      "ssh_username": "ubuntu",
+      "type": "amazon-ebs"
+    }
+  ],
+  "provisioners": [
+    {
+      "script": "{{pwd}}/install-node-exporter.sh",
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}"
+  }
+}

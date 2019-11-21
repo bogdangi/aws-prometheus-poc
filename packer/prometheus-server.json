@@ -1,0 +1,30 @@
+{
+  "builders": [
+    {
+      "name": "prometheus-server",
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "ami_name": "prometheus-server-{{timestamp}}",
+      "source_ami": "ami-0cc0a36f626a4fdf5",
+      "instance_type": "t2.micro",
+      "region": "eu-central-1",
+      "ssh_username": "ubuntu",
+      "type": "amazon-ebs"
+    }
+  ],
+  "provisioners": [
+    {
+      "destination": "/tmp/prometheus.yml",
+      "source": "{{pwd}}/prometheus.yml",
+      "type": "file"
+    },
+    {
+      "script": "{{pwd}}/install-prometheus-server.sh",
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}"
+  }
+}
